@@ -1,0 +1,19 @@
+
+l
+<app/src/main/java/com/mouhsinbourqaiba/rides/MainActivity.kt,a\3\a3b0b9632f86ab6986bb6e8921f968c8ab12902b
+@
+build.gradle.kts,d\b\dbcff70658daf80b53ce624f6adcaa529df5ed8d
+F
+app/proguard-rules.pro,9\e\9e08934d811afe28fbc77aaa3c0d747b94348db9
+D
+app/build.gradle.kts,d\2\d2a4383452aad84a18429a5844d31330a012a9e6
+X
+(gradle/wrapper/gradle-wrapper.properties,f\b\fbe448ebfc3eb2d4e308f6b8b043666f5b57235e
+C
+settings.gradle.kts,7\4\749edfcc96398253e5b3416184e95c46621da850
+n
+>app/src/main/java/com/mouhsinbourqaiba/rides/ui/theme/Color.kt,9\6\96eb9f0014ac55ae0fc781bad365df9de7f23096
+P
+ app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
+I
+gradle/libs.versions.toml,d\7\d7595319a0658be6f1ed500ad590d42e4b28bc4f
