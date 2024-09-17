@@ -17,16 +17,23 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mouhsinbourqaiba.rides.databinding.FragmentVehicleListBinding
 import com.mouhsinbourqaiba.rides.utils.MyItemDecoration
+import com.mouhsinbourqaiba.rides.validation.ValidationResult
+import com.mouhsinbourqaiba.rides.validation.VehicleCountValidator
 import com.mouhsinbourqaiba.rides.viewmodel.VehicleListViewModel
-
 
 class VehicleListFragment : Fragment() {
 
     private var _binding: FragmentVehicleListBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding ?: throw IllegalStateException("View binding is null")
+
 
     private val viewModel: VehicleListViewModel by viewModels()
     private lateinit var adapter: VehicleListAdapter
+    private val validator = VehicleCountValidator()
+    private val swipeRefreshLayout by lazy { binding.swipeRefreshLayout }
+    companion object {
+        private const val DEFAULT_VEHICLE_COUNT = 10
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentVehicleListBinding.inflate(inflater, container, false)
@@ -35,30 +42,39 @@ class VehicleListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupRecyclerView()
         setupListeners()
         observeViewModel()
     }
 
+    private fun createVehicleListAdapter() = VehicleListAdapter { vehicle ->
+        val action = VehicleListFragmentDirections.actionVehicleListFragmentToVehicleDetailsFragment(vehicle)
+        findNavController().navigate(action)
+    }
     private fun setupRecyclerView() {
-        adapter = VehicleListAdapter { vehicle ->
-            val action = VehicleListFragmentDirections.actionVehicleListFragmentToVehicleDetailsFragment(vehicle)
-            findNavController().navigate(action)
+        adapter = createVehicleListAdapter()
+        binding.recyclerViewVehicles.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            addItemDecoration(MyItemDecoration())
+            adapter = this@VehicleListFragment.adapter
         }
-        binding.recyclerViewVehicles.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerViewVehicles.addItemDecoration(MyItemDecoration())
-        binding.recyclerViewVehicles.adapter = adapter
     }
 
     private fun setupListeners() {
+
+        swipeRefreshLayout.setOnRefreshListener {
+            refreshVehicles()
+            swipeRefreshLayout.isRefreshing = false
+        }
+
         binding.buttonFetch.setOnClickListener {
             fetchVehiclesAndHideKeyboard()
         }
 
         binding.editTextCount.setOnEditorActionListener { _, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE ||
-                (event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
+                (event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)
+            ) {
                 fetchVehiclesAndHideKeyboard()
                 true
             } else {
@@ -80,37 +96,60 @@ class VehicleListFragment : Fragment() {
     }
 
     private fun fetchVehicles() {
-        val count = binding.editTextCount.text.toString().toIntOrNull()
-        if (count != null && count in 1..100) {
-            viewModel.fetchVehicles(count)
-        } else {
-            binding.editTextCount.error = "Please enter a number between 1 and 100"
+        val input = binding.editTextCount.text.toString()
+        val result = validator.validate(input)
+
+        if (result is ValidationResult.Valid) {
+            fetchValidatedVehicles(result.count)
+        } else if (result is ValidationResult.Invalid) {
+            showError(result.errorMessage)
         }
+    }
+
+    private fun fetchValidatedVehicles(count: Int) {
+        viewModel.fetchVehicles(count)
+    }
+
+    private fun showError(message: String) {
+        binding.editTextCount.error = message
+    }
+
+    private fun refreshVehicles() {
+        val itemCount = adapter.itemCount.takeIf { it > 0 } ?: DEFAULT_VEHICLE_COUNT
+        viewModel.fetchVehicles(itemCount)
     }
 
     private fun observeViewModel() {
+        observeVehicles()
+        observeLoading()
+        observeError()
+    }
+
+    private fun observeVehicles() {
         viewModel.vehicles.observe(viewLifecycleOwner) { vehicles ->
             adapter.submitList(vehicles)
         }
-
+    }
+    private fun observeLoading() {
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             binding.progressBar.isVisible = isLoading
         }
-
+    }
+    private fun observeError() {
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
-            errorMessage?.let {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
-            }
+            errorMessage?.let { displayError(it) }
         }
     }
-
+    private fun displayError(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+    }
     private fun hideKeyboard() {
         val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         imm?.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         _binding = null
+        super.onDestroyView()
     }
 }

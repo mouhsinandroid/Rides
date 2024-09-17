@@ -3,57 +3,64 @@
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools">
 
-	<androidx.constraintlayout.widget.ConstraintLayout
+	<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+		android:id="@+id/swipeRefreshLayout"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:padding="@dimen/standard_padding">
 
-		<EditText
-			android:id="@+id/editTextCount"
-			android:layout_width="0dp"
-			android:layout_height="@dimen/edit_text_height"
-			android:hint="@string/enter_number_of_vehicles"
-			android:textSize="@dimen/edit_text_text_size"
-			android:inputType="number"
-			android:imeOptions="actionDone"
-			android:importantForAutofill="yes"
-			android:autofillHints="vehicleCount"
-			app:layout_constraintEnd_toStartOf="@+id/buttonFetch"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="parent"
-			app:layout_constraintWidth_percent="0.7"
-			tools:ignore="LabelFor" />
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
 
-		<Button
-			android:id="@+id/buttonFetch"
-			android:layout_width="wrap_content"
-			android:layout_height="@dimen/min_touch_target_size"
-			android:text="@string/fetch"
-			android:layout_marginStart="@dimen/button_margin_start"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toEndOf="@+id/editTextCount"
-			app:layout_constraintTop_toTopOf="@+id/editTextCount"
-			app:layout_constraintBottom_toBottomOf="@+id/editTextCount" />
+			<EditText
+				android:id="@+id/editTextCount"
+				android:layout_width="0dp"
+				android:layout_height="@dimen/edit_text_height"
+				android:hint="@string/enter_number_of_vehicles"
+				android:textSize="@dimen/edit_text_text_size"
+				android:inputType="number"
+				android:imeOptions="actionDone"
+				android:importantForAutofill="yes"
+				android:autofillHints="vehicleCount"
+				app:layout_constraintEnd_toStartOf="@+id/buttonFetch"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toTopOf="parent"
+				app:layout_constraintWidth_percent="0.7"
+				tools:ignore="LabelFor" />
 
-		<androidx.recyclerview.widget.RecyclerView
-			android:id="@+id/recyclerViewVehicles"
-			android:layout_width="0dp"
-			android:layout_height="0dp"
-			android:layout_marginTop="@dimen/standard_padding"
-			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toBottomOf="@+id/editTextCount" />
+			<Button
+				android:id="@+id/buttonFetch"
+				android:layout_width="wrap_content"
+				android:layout_height="@dimen/min_touch_target_size"
+				android:text="@string/fetch"
+				android:layout_marginStart="@dimen/button_margin_start"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toEndOf="@+id/editTextCount"
+				app:layout_constraintTop_toTopOf="@+id/editTextCount"
+				app:layout_constraintBottom_toBottomOf="@+id/editTextCount" />
 
-		<ProgressBar
-			android:id="@+id/progressBar"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:visibility="gone"
-			app:layout_constraintBottom_toBottomOf="@+id/recyclerViewVehicles"
-			app:layout_constraintEnd_toEndOf="@+id/recyclerViewVehicles"
-			app:layout_constraintStart_toStartOf="@+id/recyclerViewVehicles"
-			app:layout_constraintTop_toTopOf="@+id/recyclerViewVehicles" />
+			<androidx.recyclerview.widget.RecyclerView
+				android:id="@+id/recyclerViewVehicles"
+				android:layout_width="0dp"
+				android:layout_height="0dp"
+				android:layout_marginTop="@dimen/standard_padding"
+				app:layout_constraintBottom_toBottomOf="parent"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@+id/editTextCount" />
 
-	</androidx.constraintlayout.widget.ConstraintLayout>
+			<ProgressBar
+				android:id="@+id/progressBar"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:visibility="gone"
+				app:layout_constraintBottom_toBottomOf="@+id/recyclerViewVehicles"
+				app:layout_constraintEnd_toEndOf="@+id/recyclerViewVehicles"
+				app:layout_constraintStart_toStartOf="@+id/recyclerViewVehicles"
+				app:layout_constraintTop_toTopOf="@+id/recyclerViewVehicles" />
+
+		</androidx.constraintlayout.widget.ConstraintLayout>
+
+	</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>
