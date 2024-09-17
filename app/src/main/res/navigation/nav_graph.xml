@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/nav_graph.xml"
+app:startDestination="@id/vehicleListFragment">
+
+<fragment
+	android:id="@+id/vehicleListFragment"
+	android:name="com.mouhsinbourqaiba.rides.view.VehicleListFragment"
+	android:label="Vehicle Search"
+	tools:layout="@layout/fragment_vehicle_list">
+	<action
+		android:id="@+id/action_vehicleListFragment_to_vehicleDetailsFragment"
+		app:destination="@id/vehicleDetailsFragment"
+		app:popUpTo="@id/vehicleListFragment" />
+</fragment>
+<fragment
+	android:id="@+id/vehicleDetailsFragment"
+	android:name="com.mouhsinbourqaiba.rides.view.VehicleDetailsFragment"
+	android:label="Vehicle Details"
+	tools:layout="@layout/fragment_vehicle_details">
+	<argument
+		android:name="vehicle"
+		app:argType="com.mouhsinbourqaiba.rides.model.Vehicle"
+		app:nullable="true" />
+</fragment>
+</navigation>
