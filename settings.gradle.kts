@@ -13,7 +13,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-
+enableFeaturePreview("VERSION_CATALOGS")
 rootProject.name = "Rides"
 include(":app")
  

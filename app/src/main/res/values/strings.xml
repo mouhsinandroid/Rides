@@ -1,3 +1,10 @@
 <resources>
 	<string name="app_name">Rides</string>
+	<string name="enter_number_of_vehicles">Enter number of vehicles (1-100)</string>
+	<string name="fetch">Fetch</string>
+	<string name="carbon_emissions_button">Carbon Emissions</string>
+	<string name="sample_vehicle_make_model">Audi A5</string>
+	<string name="sample_vehicle_vin">VIN: 5DJLRKXPPEPR68162</string>
+	<string name="sample_vehicle_color">Color: White</string>
+	<string name="sample_vehicle_type">Type: Cargo Van</string>
 </resources>
